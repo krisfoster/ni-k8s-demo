@@ -1,0 +1,292 @@
+{
+  "annotations": {
+    "list": [
+      {
+        "builtIn": 1,
+        "datasource": "-- Grafana --",
+        "enable": true,
+        "hide": true,
+        "iconColor": "rgba(0, 211, 255, 1)",
+        "name": "Annotations & Alerts",
+        "target": {
+          "limit": 100,
+          "matchAny": false,
+          "tags": [],
+          "type": "dashboard"
+        },
+        "type": "dashboard"
+      }
+    ]
+  },
+  "editable": true,
+  "fiscalYearStartMonth": 0,
+  "gnetId": null,
+  "graphTooltip": 0,
+  "id": 7,
+  "links": [],
+  "liveNow": false,
+  "panels": [
+    {
+      "datasource": "Prometheus0",
+      "description": "",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "min": 102,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          },
+          "unit": "decbytes"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 6,
+        "w": 17,
+        "x": 0,
+        "y": 0
+      },
+      "id": 6,
+      "options": {
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showThresholdLabels": false,
+        "showThresholdMarkers": true,
+        "text": {}
+      },
+      "pluginVersion": "8.2.5",
+      "targets": [
+        {
+          "exemplar": true,
+          "expr": "container_memory_rss{name=\"primes-native-g1\",}",
+          "hide": false,
+          "interval": "",
+          "legendFormat": "Memory / Native Image",
+          "refId": "B"
+        },
+        {
+          "exemplar": true,
+          "expr": "container_memory_rss{name=\"primes-native-opt\",}",
+          "hide": false,
+          "interval": "",
+          "legendFormat": "Memory / Native Image PGO",
+          "refId": "C"
+        },
+        {
+          "exemplar": true,
+          "expr": "container_memory_rss{name=\"primes-openjdk\"}",
+          "interval": "",
+          "legendFormat": "Memory / OpenJDK",
+          "refId": "A"
+        }
+      ],
+      "title": "Memory Usage (RSS) - Lower is Better",
+      "type": "gauge"
+    },
+    {
+      "datasource": "Prometheus0",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "s"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 6,
+        "w": 7,
+        "x": 17,
+        "y": 0
+      },
+      "id": 4,
+      "options": {
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showThresholdLabels": false,
+        "showThresholdMarkers": true,
+        "text": {}
+      },
+      "pluginVersion": "8.2.5",
+      "targets": [
+        {
+          "exemplar": true,
+          "expr": "application_started_time_seconds{job=\"primes.native-g1\"}",
+          "hide": false,
+          "interval": "",
+          "legendFormat": "Native Image Startup",
+          "refId": "Native Image G1"
+        },
+        {
+          "exemplar": true,
+          "expr": "application_started_time_seconds{job=\"primes.openjdk\"}",
+          "interval": "",
+          "legendFormat": "OpenJDK Startup",
+          "refId": "openjdk"
+        }
+      ],
+      "title": "Start-up Time - Lower is Better",
+      "type": "gauge"
+    },
+    {
+      "datasource": "Prometheus0",
+      "description": "",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "min": 1500,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "reqps"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 10,
+        "w": 24,
+        "x": 0,
+        "y": 6
+      },
+      "id": 2,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom"
+        },
+        "tooltip": {
+          "mode": "single"
+        }
+      },
+      "targets": [
+        {
+          "exemplar": true,
+          "expr": "rate(http_server_requests_seconds_count{job=\"primes.openjdk\", status=\"200\", uri=\"/primes\"}[$__interval])",
+          "interval": "",
+          "legendFormat": "OpenJDK (req / s)",
+          "refId": "openjdk"
+        },
+        {
+          "exemplar": true,
+          "expr": "rate(http_server_requests_seconds_count{job=\"primes.native-opt\", status=\"200\", uri=\"/primes\"}[$__interval])",
+          "hide": false,
+          "interval": "",
+          "legendFormat": "Native Image PGO  (req / s)",
+          "refId": "Native Image"
+        },
+        {
+          "exemplar": true,
+          "expr": "rate(http_server_requests_seconds_count{job=\"primes.native-g1\", status=\"200\", uri=\"/primes\"}[$__interval])",
+          "hide": false,
+          "interval": "",
+          "legendFormat": "Native Image G1 (req / s)",
+          "refId": "A"
+        },
+        {
+          "exemplar": true,
+          "expr": "rate(http_server_requests_seconds_count{job=\"primes.graalee\", status=\"200\", uri=\"/primes\"}[$__interval])",
+          "hide": false,
+          "interval": "",
+          "legendFormat": "GraalVM EE (req / s)",
+          "refId": "B"
+        }
+      ],
+      "title": "Throughput - Higher is Better",
+      "type": "timeseries"
+    }
+  ],
+  "refresh": "5s",
+  "schemaVersion": 32,
+  "style": "dark",
+  "tags": [],
+  "templating": {
+    "list": []
+  },
+  "time": {
+    "from": "now-5m",
+    "to": "now"
+  },
+  "timepicker": {},
+  "timezone": "",
+  "title": "Service Level / Customer Portfolio Dashboard",
+  "uid": "Z5_uBcp7k",
+  "version": 9
+}

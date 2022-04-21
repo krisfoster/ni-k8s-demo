@@ -1,0 +1,22 @@
+version: '2.4'
+
+services:
+  # Instrumented native image, in a container
+  primes-native-inst:
+    image: localhost/primes:nativeinst.0.1
+    mem_limit: 1024m
+    memswap_limit: 1024m
+    cpu_count: 4
+    cpu_percent: 100
+    cpus: 4
+    # Pass in the location of the profile dump directory as an extra command param
+    command:
+      - " -XX:ProfilesDumpFile=./primes.iprof"
+    ports:
+      - "8080:8080"
+  # Stress Test Infra
+  stress-native-g1:
+    image: ricoli/hey
+    command: -z 60s http://primes-native-inst:8080/primes?upperBound=9999
+    depends_on:
+      - "primes-native-inst"

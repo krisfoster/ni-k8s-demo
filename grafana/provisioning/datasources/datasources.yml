@@ -1,0 +1,8 @@
+datasources:
+- name: Prometheus0
+  access: proxy
+  type: prometheus
+  url: http://prom:9090
+  user:
+  allowUiUpdates: true
+  isDefault: true

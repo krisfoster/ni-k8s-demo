@@ -1,0 +1,176 @@
+version: '2.4'
+
+volumes:
+  prometheus_data:
+  grafana_data:
+
+services:
+
+  # Apps
+  primes-openjdk:
+    image: localhost/primes:openjdk.0.1
+    restart: always
+    mem_limit: 2048m
+    memswap_limit: 2048m
+    cpu_count: 4
+    cpu_percent: 100
+    cpus: 4
+    container_name: primes-openjdk
+    depends_on:
+      - "prom"
+    ports:
+      - "8085:8080"
+  primes-graalee:
+    image: localhost/primes:graalee.0.1
+    restart: always
+    mem_limit: 2048m
+    memswap_limit: 2048m
+    cpu_count: 4
+    cpu_percent: 100
+    cpus: 4
+    container_name: primes-graalee
+    depends_on:
+      - "prom"
+    ports:
+      - "8086:8080"
+  primes-native:
+   image: localhost/primes:native.0.1
+   restart: always
+   mem_limit: 256m
+   memswap_limit: 256m
+   cpu_count: 2
+   cpu_percent: 100
+   cpus: 2
+   container_name: primes-native
+   depends_on:
+     - "prom"
+   ports:
+     - "8087:8080"
+  primes-native-g1:
+    image: localhost/primes:nativeg1.0.1
+    restart: always
+    mem_limit: 512m
+    memswap_limit: 512m
+    cpu_count: 4
+    cpu_percent: 100
+    cpus: 4
+    container_name: primes-native-g1
+    depends_on:
+      - "prom"
+    ports:
+      - "8088:8080"
+#  primes-native-inst:
+#    image: localhost/primes:nativeinst.0.1
+#    restart: always
+#    mem_limit: 1024m
+#    memswap_limit: 1024m
+#    cpu_count: 2
+#    cpu_percent: 100
+#    cpus: 2
+#    volumes:
+#      - ./profiles:/profiles:rw
+#    # Pass in the location of the profile dump directory as an extra command param
+#    command:
+#      - " -XX:ProfilesDumpFile=/profiles/primes.iprof"
+#    container_name: primes-native-inst
+#    depends_on:
+#      - "prom"
+#    ports:
+#      - "8089:8080"
+  primes-native-opt:
+    image: localhost/primes:nativeopt.0.1
+    restart: always
+    mem_limit: 512m
+    memswap_limit: 512m
+    cpu_count: 4
+    cpu_percent: 100
+    cpus: 4
+    container_name: primes-native-opt
+    depends_on:
+      - "prom"
+    ports:
+      - "8090:8080"
+
+  # Reporting & Metrics
+  ## Node Exporter
+#  node-exporter:
+#    image: prom/node-exporter:latest
+#    container_name: node-exporter
+#    restart: unless-stopped
+#    volumes:
+#      - /sys:/host/sys:ro
+#      - /proc:/host/proc:ro
+#      - /:/rootfs:ro
+#    command:
+#      - '--path.procfs=/host/proc'
+#      - '--path.rootfs=/rootfs'
+#      - '--path.sysfs=/host/sys'
+#      - '--collector.filesystem.mount-points-exclude=^/(sys|proc|dev|host|etc)($$|/)'
+#    expose:
+#      - 9100
+  # Prometheus
+  prom:
+    image: prom/prometheus
+    container_name: prometheus
+    volumes:
+      - ./prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+      - '--storage.tsdb.path=/prometheus'
+      - '--web.console.libraries=/etc/prometheus/console_libraries'
+      - '--web.console.templates=/etc/prometheus/consoles'
+      - '--web.enable-lifecycle'
+    ports:
+      - "9090:9090"
+  # Grafana
+  grafana:
+    image: grafana/grafana-oss
+    container_name: grafana
+    depends_on:
+     - prom
+    volumes:
+      - ./grafana/provisioning/:/etc/grafana/provisioning/
+      - ./grafana/grafana.ini:/etc/grafana/grafana.ini
+      - grafana_data:/var/lib/grafana
+    ports:
+      - "3000:3000"
+    user: '104'
+  ## CAdvisor
+  cadvisor:
+    image: gcr.io/cadvisor/cadvisor:v0.42.0
+    container_name: cadvisor
+    privileged: true
+    devices:
+      - /dev/kmsg:/dev/kmsg
+    volumes:
+      - /:/rootfs:ro
+      - /var/run:/var/run:ro
+      - /sys:/sys:ro
+      - /var/lib/docker:/var/lib/docker:ro
+      - /cgroup:/cgroup:ro #doesn't work on MacOS only for Linux
+    restart: unless-stopped
+    ports:
+      - 9099:8080
+
+
+  # Stress Test Infra
+  stress-openjdk:
+    image: ricoli/hey
+    command: -z 60m http://primes-openjdk:8080/primes?upperBound=9999
+    depends_on:
+      - "primes-openjdk"
+  stress-graalee:
+    image: ricoli/hey
+    command: -z 60m http://primes-graalee:8080/primes?upperBound=9999
+    depends_on:
+      - "primes-graalee"
+  stress-native-g1:
+    image: ricoli/hey
+    command: -z 60m http://primes-native-g1:8080/primes?upperBound=9999
+    depends_on:
+      - "primes-native-g1"
+  stress-native-opt:
+    image: ricoli/hey
+    command: -z 60m http://primes-native-opt:8080/primes?upperBound=9999
+    depends_on:
+      - "primes-native-opt"

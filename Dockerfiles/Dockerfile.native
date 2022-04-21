@@ -1,0 +1,16 @@
+FROM localhost/demo-builder:0.1 as BUILDER
+
+ARG PROFILE
+
+WORKDIR /home/app
+COPY . /home/app
+RUN ./mvnw package -P${PROFILE}
+
+FROM container-registry.oracle.com/os/oraclelinux:8-slim
+
+EXPOSE 8080
+
+ARG APP_NAME
+
+COPY --from=BUILDER /home/app/target/${APP_NAME} prime
+ENTRYPOINT ["/prime"]
