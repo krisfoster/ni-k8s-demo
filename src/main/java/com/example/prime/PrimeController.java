@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.ApplicationContext;
 
+import io.micrometer.core.annotation.Timed;
+
 import java.util.List;
 import java.util.Arrays;
 
@@ -25,6 +27,7 @@ import java.util.Arrays;
 @RestController
 @EnableAutoConfiguration
 @RequestMapping("/primes")
+@Timed(value = "method.primes", percentiles = { 0.5, 0.95, 0.99 }, description = "Read all alarms api metric")
 @ComponentScan("com.example.prime")
 public class PrimeController {
 
@@ -75,6 +78,7 @@ public class PrimeController {
         }
     }
 
+    @Timed(value = "method.primes.jibber", percentiles = { 0.5, 0.95, 0.99 }, description = "Read all alarms api metric")
     @RequestMapping(method = RequestMethod.GET, path = "/jibber")
     ResponseEntity<String> jibber() {
         return ResponseEntity.ok(j.generate());

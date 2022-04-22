@@ -3,7 +3,7 @@ version: '2.4'
 services:
   # Instrumented native image, in a container
   primes-native-inst:
-    image: localhost/primes:nativeinst.0.1
+    image: phx.ocir.io/oracledeveloper/k8s-perf-demo:native-pgo-inst.0.0.1-SNAPSHOT
     mem_limit: 1024m
     memswap_limit: 1024m
     cpu_count: 4
@@ -11,12 +11,19 @@ services:
     cpus: 4
     # Pass in the location of the profile dump directory as an extra command param
     command:
-      - " -XX:ProfilesDumpFile=./primes.iprof"
+      - " -XX:ProfilesDumpFile=/data/primes.iprof"
     ports:
       - "8080:8080"
+    volumes:
+      - ./profiles:/data
   # Stress Test Infra
-  stress-native-g1:
+  stress-1:
     image: ricoli/hey
-    command: -z 60s http://primes-native-inst:8080/primes?upperBound=9999
+    command: -z 2m http://primes-native-inst:8080/primes?upperBound=9999
+    depends_on:
+      - "primes-native-inst"
+  stress21:
+    image: ricoli/hey
+    command: -z 2m http://primes-native-inst:8080/primes/jibber
     depends_on:
       - "primes-native-inst"

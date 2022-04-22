@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
         - name: demoopenjdk
-          image: phx.ocir.io/oracledeveloper/k8s-perf-demo:openjdk.0.1
+          image: phx.ocir.io/oracledeveloper/k8s-perf-demo:openjdk.0.0.1-SNAPSHOT
           resources:
             requests:
               memory: "256Mi"

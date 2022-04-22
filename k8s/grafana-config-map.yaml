@@ -51,20 +51,17 @@ metadata:
   labels:
     app: grafana
 data:
-  dashboardproviders.yaml: |
+  dashboard.yaml: |
     apiVersion: 1
     providers:
-    - name: k8s-cluster-summary
-      folder: homelab
-      options:
-        path: /var/lib/grafana/dashboards/k8s-cluster-summary
+    - name: 'Graal Dashboards'
       orgId: 1
+      folder: ''
       type: file
       disableDeletion: false
-    - name: node-exporter-full
-      folder: homelab
+      editable: true
+      allowUiUpdates: true
       options:
-        path: /var/lib/grafana/dashboards/node-exporter-full
-      orgId: 1
-      type: file
-      disableDeletion: false
+        path: /etc/grafana/provisioning/dashboards/
+
+

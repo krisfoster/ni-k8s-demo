@@ -8,6 +8,7 @@
 	   <version>2.6.5</version>
 	   <relativePath/>
 	</parent>
+
 	<groupId>com.example</groupId>
 	<artifactId>prime</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
@@ -19,11 +20,12 @@
 		<repackage.classifier/>
 		<spring-native.version>0.11.2</spring-native.version>
 		<native-buildtools.version>0.9.11</native-buildtools.version>
-		<!--
-		Native Image bUild properties - specify these on the command line like so:
-		-Dg1Flag=- -gc=G1
-		-Dinstrument=- -pgo-instrument
-		-->
+		<dockerfile-maven-version>1.4.13</dockerfile-maven-version>
+		<docker-repository>phx.ocir.io/oracledeveloper/k8s-perf-demo</docker-repository>
+		<docker-file>./Dockerfiles/Dockerfile.jvm</docker-file>
+		<base-image-tag>openjdk</base-image-tag>
+		<binary-name>prime</binary-name>
+		<native-image-extra-flags></native-image-extra-flags>
 	</properties>
 
 	<dependencies>
@@ -62,6 +64,12 @@
 			<groupId>org.rednoise</groupId>
 			<artifactId>rita</artifactId>
 			<version>2.4.501</version>
+		</dependency>
+		<dependency>
+			<groupId>org.graalvm.buildtools</groupId>
+			<artifactId>junit-platform-native</artifactId>
+			<version>${native-buildtools.version}</version>
+			<scope>test</scope>
 		</dependency>
 	</dependencies>
 
@@ -121,23 +129,55 @@
 					</execution>
 				</executions>
 			</plugin>
+			<plugin>
+				<groupId>com.spotify</groupId>
+				<artifactId>dockerfile-maven-plugin</artifactId>
+				<version>${dockerfile-maven-version}</version>
+				<executions>
+					<execution>
+					<id>default</id>
+					<goals>
+						<goal>build</goal>
+						<goal>push</goal>
+					</goals>
+					</execution>
+				</executions>
+				<configuration>
+					<repository>${docker-repository}</repository>
+					<tag>${base-image-tag}.${project.version}</tag>
+					<buildArgs>
+						<JAR_FILE>${project.build.finalName}.jar</JAR_FILE>
+					</buildArgs>
+					<dockerfile>${docker-file}</dockerfile>
+				</configuration>
+			</plugin>
 		</plugins>
 	</build>
+
+
 	<profiles>
+		<!-- GraalVM EE Image-->
+		<profile>
+			<id>graalee</id>
+			<properties>
+				<docker-file>./Dockerfiles/Dockerfile.graalee</docker-file>
+				<base-image-tag>graalee</base-image-tag>
+			</properties>
+		</profile>
+		<!-- Native Image EE Image
+			customise this by passing in extra args such as:
+			Rename the tag for the image
+			-Dbase-image-tag=NAME-OF-TAG
+			Etra flasg to the native imaeg build
+			-Dnative-image-extra-flags="- -gc=G1"
+			-->
 		<profile>
 			<id>native</id>
 			<properties>
 				<repackage.classifier>exec</repackage.classifier>
-				<native-buildtools.version>0.9.11</native-buildtools.version>
+				<docker-file>./Dockerfiles/Dockerfile.native.simple</docker-file>
+				<base-image-tag>native</base-image-tag>
 			</properties>
-			<dependencies>
-				<dependency>
-					<groupId>org.graalvm.buildtools</groupId>
-					<artifactId>junit-platform-native</artifactId>
-					<version>${native-buildtools.version}</version>
-					<scope>test</scope>
-				</dependency>
-			</dependencies>
 			<build>
 				<plugins>
 					<plugin>
@@ -145,13 +185,6 @@
 						<artifactId>native-maven-plugin</artifactId>
 						<version>${native-buildtools.version}</version>
 						<executions>
-							<execution>
-								<id>test-native</id>
-								<phase>test</phase>
-								<goals>
-									<goal>test</goal>
-								</goals>
-							</execution>
 							<execution>
 								<id>build-native</id>
 								<phase>package</phase>
@@ -161,74 +194,46 @@
 							</execution>
 						</executions>
 						<configuration>
-							<imageName>prime</imageName>
-						</configuration>
-					</plugin>
-				</plugins>
-			</build>
-		</profile>
-		<profile>
-			<id>native-g1</id>
-			<properties>
-				<repackage.classifier>exec</repackage.classifier>
-				<native-buildtools.version>0.9.11</native-buildtools.version>
-			</properties>
-			<dependencies>
-				<dependency>
-					<groupId>org.graalvm.buildtools</groupId>
-					<artifactId>junit-platform-native</artifactId>
-					<version>${native-buildtools.version}</version>
-					<scope>test</scope>
-				</dependency>
-			</dependencies>
-			<build>
-				<plugins>
-					<plugin>
-						<groupId>org.graalvm.buildtools</groupId>
-						<artifactId>native-maven-plugin</artifactId>
-						<version>${native-buildtools.version}</version>
-						<executions>
-							<execution>
-								<id>test-native</id>
-								<phase>test</phase>
-								<goals>
-									<goal>test</goal>
-								</goals>
-							</execution>
-							<execution>
-								<id>build-native</id>
-								<phase>package</phase>
-								<goals>
-									<goal>build</goal>
-								</goals>
-							</execution>
-						</executions>
-						<configuration>
-							<imageName>prime</imageName>
+							<imageName>${binary-name}</imageName>
 							<buildArgs>
-								<!-- Add support for G1GC -->
-								<buildArg>--gc=G1</buildArg>
-								<buildArg>-H:+ReportExceptionStackTraces</buildArg>
+								<buildArg>-H:+ReportExceptionStackTraces ${native-image-extra-flags}</buildArg>
 							</buildArgs>
 						</configuration>
 					</plugin>
+					<plugin>
+						<groupId>com.spotify</groupId>
+						<artifactId>dockerfile-maven-plugin</artifactId>
+						<version>${dockerfile-maven-version}</version>
+						<executions>
+							<execution>
+							<id>default</id>
+							<goals>
+								<goal>build</goal>
+								<goal>push</goal>
+							</goals>
+							</execution>
+						</executions>
+						<configuration>
+							<repository>${docker-repository}</repository>
+							<tag>${base-image-tag}.${project.version}</tag>
+							<buildArgs>
+								<JAR_FILE>${binary-name}</JAR_FILE>
+							</buildArgs>
+							<dockerfile>${docker-file}</dockerfile>
+						</configuration>
+					</plugin>
 				</plugins>
 			</build>
 		</profile>
+
+		<!-- Profile for building PGO optimised version of Native Image EE -->
 		<profile>
-			<id>native-inst</id>
+			<id>native-pgo</id>
 			<properties>
 				<repackage.classifier>exec</repackage.classifier>
-				<native-buildtools.version>0.9.11</native-buildtools.version>
+				<docker-file>./Dockerfiles/Dockerfile.native.simple</docker-file>
+				<base-image-tag>native-pgo</base-image-tag>
 			</properties>
-			<dependencies>
-				<dependency>
-					<groupId>org.graalvm.buildtools</groupId>
-					<artifactId>junit-platform-native</artifactId>
-					<version>${native-buildtools.version}</version>
-					<scope>test</scope>
-				</dependency>
-			</dependencies>
 			<build>
 				<plugins>
 					<plugin>
@@ -236,13 +241,6 @@
 						<artifactId>native-maven-plugin</artifactId>
 						<version>${native-buildtools.version}</version>
 						<executions>
-							<execution>
-								<id>test-native</id>
-								<phase>test</phase>
-								<goals>
-									<goal>test</goal>
-								</goals>
-							</execution>
 							<execution>
 								<id>build-native</id>
 								<phase>package</phase>
@@ -253,63 +251,34 @@
 						</executions>
 						<configuration>
 							<imageName>prime</imageName>
-							<!--mainClass>ping.Application</mainClass-->
-							<buildArgs>
-								<!-- Add support for G1GC -->
-								<buildArg>--gc=G1</buildArg>
-								<buildArg>-H:+ReportExceptionStackTraces</buildArg>
-								<!-- Instrument the application - adds reporting for profiling -->
-								<buildArg>--pgo-instrument</buildArg>
-							</buildArgs>
-						</configuration>
-					</plugin>
-				</plugins>
-			</build>
-		</profile>
-		<profile>
-			<id>native-opt</id>
-			<properties>
-				<repackage.classifier>exec</repackage.classifier>
-				<native-buildtools.version>0.9.11</native-buildtools.version>
-			</properties>
-			<dependencies>
-				<dependency>
-					<groupId>org.graalvm.buildtools</groupId>
-					<artifactId>junit-platform-native</artifactId>
-					<version>${native-buildtools.version}</version>
-					<scope>test</scope>
-				</dependency>
-			</dependencies>
-			<build>
-				<plugins>
-					<plugin>
-						<groupId>org.graalvm.buildtools</groupId>
-						<artifactId>native-maven-plugin</artifactId>
-						<version>${native-buildtools.version}</version>
-						<executions>
-							<execution>
-								<id>test-native</id>
-								<phase>test</phase>
-								<goals>
-									<goal>test</goal>
-								</goals>
-							</execution>
-							<execution>
-								<id>build-native</id>
-								<phase>package</phase>
-								<goals>
-									<goal>build</goal>
-								</goals>
-							</execution>
-						</executions>
-						<configuration>
-							<imageName>prime-opt</imageName>
 							<buildArgs>
 								<!-- Add support for G1GC -->
 								<buildArg>--gc=G1</buildArg>
 								<buildArg>-H:+ReportExceptionStackTraces</buildArg>
 								<buildArg>--pgo=${project.basedir}/profiles/primes.iprof</buildArg>
 							</buildArgs>
+						</configuration>
+					</plugin>
+					<plugin>
+						<groupId>com.spotify</groupId>
+						<artifactId>dockerfile-maven-plugin</artifactId>
+						<version>${dockerfile-maven-version}</version>
+						<executions>
+							<execution>
+							<id>default</id>
+							<goals>
+								<goal>build</goal>
+								<goal>push</goal>
+							</goals>
+							</execution>
+						</executions>
+						<configuration>
+							<repository>${docker-repository}</repository>
+							<tag>${base-image-tag}.${project.version}</tag>
+							<buildArgs>
+								<JAR_FILE>${binary-name}</JAR_FILE>
+							</buildArgs>
+							<dockerfile>${docker-file}</dockerfile>
 						</configuration>
 					</plugin>
 				</plugins>

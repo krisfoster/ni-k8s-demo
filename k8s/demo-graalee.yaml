@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
         - name: demograalee
-          image: phx.ocir.io/oracledeveloper/k8s-perf-demo:graalee.0.1
+          image: phx.ocir.io/oracledeveloper/k8s-perf-demo:graalee.0.0.1-SNAPSHOT
           resources:
             requests:
               memory: "256Mi"
