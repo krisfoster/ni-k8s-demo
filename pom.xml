@@ -63,6 +63,21 @@
 			<artifactId>rita</artifactId>
 			<version>2.4.501</version>
 		</dependency>
+		<!-- https://mvnrepository.com/artifact/net.sf.saxon/Saxon-HE -->
+		<dependency>
+			<groupId>net.sf.saxon</groupId>
+			<artifactId>Saxon-HE</artifactId>
+			<version>11.3</version>
+		</dependency>
+		<!-- https://mvnrepository.com/artifact/org.xmlresolver/xmlresolver -->
+		<dependency>
+			<groupId>org.xmlresolver</groupId>
+			<artifactId>xmlresolver</artifactId>
+			<version>4.3.0</version>
+			<!--scope>runtime</scope-->
+		</dependency>
+
+
 	</dependencies>
 
 	<repositories>
@@ -162,6 +177,10 @@
 						</executions>
 						<configuration>
 							<imageName>prime</imageName>
+							<buildArgs>
+								<buildArg>-H:+ReportExceptionStackTraces</buildArg>
+								<buildArg>-J-Djavax.xml.transform.TransformerFactory=net.sf.saxon.TransformerFactoryImpl</buildArg>
+							</buildArgs>
 						</configuration>
 					</plugin>
 				</plugins>
