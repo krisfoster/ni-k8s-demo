@@ -27,7 +27,7 @@ public class PrimesController {
     /**
      * API Operation that determines if the number (resource) supplied is prime.
      *
-     * @param number The number to check if prime
+     * @param number    The number to check if prime
      * @param algorithm The algorithm to use. Defaults to Sieve
      * @return {@code 200} if the number is prime, else {@code 404}
      */
