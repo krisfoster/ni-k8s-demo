@@ -26,7 +26,7 @@ public class XsltTransformer {
         InputStream xsltFile = new ClassPathResource("display.xsl").getInputStream();
         xsltContent = IOUtils.toString(xsltFile);
 
-        InputStream xmlFile = new ClassPathResource("KBW.xml").getInputStream();
+        InputStream xmlFile = new ClassPathResource("KSN.xml").getInputStream();
         xmlContent = IOUtils.toString(xmlFile);
 
         TransformerFactory tFactory = TransformerFactory.newInstance();

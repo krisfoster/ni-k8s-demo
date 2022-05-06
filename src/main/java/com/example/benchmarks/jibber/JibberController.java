@@ -22,6 +22,6 @@ public class JibberController {
 
     @RequestMapping(value = "/{number}")
     ResponseEntity<String> jibberN(@PathVariable int number) {
-        return ResponseEntity.ok(j.generate());
+        return ResponseEntity.ok(j.generate(number));
     }
 }
