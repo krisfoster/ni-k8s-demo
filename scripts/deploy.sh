@@ -8,6 +8,7 @@ kubectl create -f k8s/prom-config-map.yaml
 kubectl create -f k8s/prom-deployment.yaml
 kubectl create -f k8s/grafana-config-map.yaml
 kubectl create -f k8s/grafana-deployment.yaml
+#
 kubectl create -f k8s/demo-openjdk.yaml
 kubectl create -f k8s/demo-graalee.yaml
 kubectl create -f k8s/demo-native.yaml
