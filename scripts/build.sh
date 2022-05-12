@@ -10,14 +10,10 @@ mvn package -Pgraalee
 mvn package -Pnative
 
 # Build native image EE + G1 Image
-mvn package -Pnative -Dbase-image-tag=native-pgo-inst -Dnative-image-extra-flags="--gc=G1"
-
-# Build pgo instrumented native image EE Image
-mvn package -Pnative -Dbase-image-tag=native-pgo-inst -Dnative-image-extra-flags="--gc=G1 --pgo-instrument"
+mvn package -Pnative -Dbase-image-tag=native-g1 -Dnative-image-extra-flags="--gc=G1"
 
 # Build instrumented binary for profiling
 mvn package -Pnative -Ddockerfile.skip -Dnative-image-extra-flags="--gc=G1 --pgo-instrument"
 
 # Build PGO native image EE + G1 Image
-mvn package -Pnative -Dbase-image-tag=native-pgo-inst \
-  -Dnative-image-extra-flags="--gc=G1 --pgo-instrument --pgo=~/profiles/prime.iprof"
+mvn package -Pnative-pgo -Dbase-image-tag=native-pgo

@@ -18,6 +18,7 @@ spec:
       containers:
         - name: demonative
           image: phx.ocir.io/oracledeveloper/k8s-perf-demo:native.0.0.1-SNAPSHOT
+          imagePullPolicy: Always
           resources:
             requests:
               memory: "128Mi"

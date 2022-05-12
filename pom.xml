@@ -10,10 +10,10 @@
 	</parent>
 
 	<groupId>com.example</groupId>
-	<artifactId>prime</artifactId>
+	<artifactId>benchmark</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>primes-demo</name>
-	<description>Demo project for Spring Boot</description>
+	<name>benchmark-demo</name>
+	<description>benchmark project for Spring Boot</description>
 
 	<properties>
 		<java.version>17</java.version>
@@ -209,8 +209,7 @@
 						<configuration>
 							<imageName>${binary-name}</imageName>
 							<buildArgs>
-								<buildArg>-H:+ReportExceptionStackTraces</buildArg>
-								<buildArg>${native-image-extra-flags}</buildArg>
+								<buildArg>-H:+ReportExceptionStackTraces ${native-image-extra-flags}</buildArg>
 								<buildArg>-J-Djavax.xml.transform.TransformerFactory=net.sf.saxon.TransformerFactoryImpl</buildArg>
 							</buildArgs>
 						</configuration>
@@ -270,7 +269,7 @@
 								<!-- Add support for G1GC -->
 								<buildArg>--gc=G1</buildArg>
 								<buildArg>-H:+ReportExceptionStackTraces</buildArg>
-								<buildArg>--pgo=${project.basedir}/profiles/primes.iprof</buildArg>
+								<buildArg>--pgo=${project.basedir}/profiles/default.iprof</buildArg>
 							</buildArgs>
 						</configuration>
 					</plugin>
