@@ -1,0 +1,53 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: jibber-nativeopts-deployment
+  namespace: jibber
+  labels:
+    app: jibber-nativeopts
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: jibber-nativeopts
+  template:
+    metadata:
+      labels:
+        app: jibber-nativeopts
+    spec:
+      containers:
+        - name: jibber-nativeopts
+          image: phx.ocir.io/oracledeveloper/k8s-perf-demo:jibber.native-pgo.0.0.2-SNAPSHOT
+          imagePullPolicy: Always
+          resources:
+            requests:
+              memory: "128Mi"
+              cpu: "2000m"
+            limits:
+              memory: "256Mi"
+              cpu: "2000m"
+          ports:
+            - containerPort: 8080
+              name: native-port
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: jibber-nativeopts-svc
+  namespace: jibber
+  labels:
+    app: jibber-nativeopts
+  annotations:
+    oci.oraclecloud.com/load-balancer-type: "lb"
+    prometheus.io/path: "/actuator/prometheus"
+    prometheus.io/port: "8080"
+    prometheus.io/scrape: "true"
+spec:
+  type: LoadBalancer
+  ports:
+    - port : 8080
+  selector:
+    app: jibber-nativeopts
+
+---

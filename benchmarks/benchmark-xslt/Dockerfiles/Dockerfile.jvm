@@ -1,0 +1,17 @@
+FROM container-registry.oracle.com/os/oraclelinux:8
+
+ARG JAR_FILE
+
+RUN yum -y install wget unzip zip findutils tar
+
+RUN \
+    # Install SDKMAN
+    curl -s "https://get.sdkman.io" | bash; \
+    source "$HOME/.sdkman/bin/sdkman-init.sh"; \
+    # Install OpenJDK
+    sdk install java 17.0.1-open;
+
+EXPOSE 8080
+
+COPY ./target/${JAR_FILE} app.jar
+CMD ["/root/.sdkman/candidates/java/current/bin/java","-jar","app.jar"]
