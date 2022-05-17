@@ -37,7 +37,7 @@ metadata:
   name: transform-openjdk-svc
   namespace: transform
   labels:
-    app: jibber-openjdk
+    app: transform-openjdk
   annotations:
     oci.oraclecloud.com/load-balancer-type: "lb"
     prometheus.io/path: "/actuator/prometheus"
