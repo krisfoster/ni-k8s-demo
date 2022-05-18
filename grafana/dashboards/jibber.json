@@ -100,7 +100,7 @@
                             },
                             {
                                 "color": "green",
-                                "value": 700
+                                "value": 600
                             }
                         ]
                     },
@@ -319,6 +319,7 @@
                     },
                     "exemplar": true,
                     "expr": "application_ready_time_seconds{app=\"jibber-native\"}",
+                    "format": "time_series",
                     "interval": "",
                     "legendFormat": "GraalVM Native exe",
                     "refId": "A"
@@ -330,6 +331,7 @@
                     },
                     "exemplar": true,
                     "expr": "application_ready_time_seconds{app=\"jibber-openjdk\"}",
+                    "format": "time_series",
                     "hide": false,
                     "interval": "",
                     "legendFormat": "OpenJDK",
@@ -348,7 +350,7 @@
         "list": []
     },
     "time": {
-        "from": "now-5m",
+        "from": "now-15m",
         "to": "now"
     },
     "timepicker": {
@@ -368,6 +370,6 @@
     "timezone": "",
     "title": "Jibber API",
     "uid": "qA79viunk",
-    "version": 14,
+    "version": 15,
     "weekStart": ""
 }
