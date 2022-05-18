@@ -11,7 +11,7 @@
 
 	<groupId>com.oracle.graal</groupId>
 	<artifactId>benchmark-jibber</artifactId>
-	<version>0.0.2-SNAPSHOT</version>
+	<version>0.0.3-SNAPSHOT</version>
 	<name>benchmark-jibber</name>
 	<description>Jibber benchmark project for Spring Boot</description>
 

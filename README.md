@@ -11,3 +11,9 @@ resources. We would recommend at least 4 cores and a minimum of 16GB memory.
 Another thing to note is the use of the builder image. As we are building inside a docker container and are using the
 maven tooling to generate the native executable, maven will need to be inside our container. WHich means that when maven
 runs it will need access to the cache of dependencies. On
+
+# Load Balancing
+
+We use the OCI nnotation to add automatic loadbalancer adition:
+
+https://docs.oracle.com/en-us/iaas/Content/ContEng/Tasks/contengcreatingloadbalancer.htm
