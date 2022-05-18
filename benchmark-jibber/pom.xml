@@ -17,6 +17,9 @@
 
 	<properties>
 		<binary-name>jibber</binary-name>
+		<!--
+			TODO: You will nedd to update the docker repo for you own.
+		-->
 		<docker-repository>phx.ocir.io/oracledeveloper/k8s-perf-demo</docker-repository>
 		<docker-file>Dockerfiles/Dockerfile.jvm</docker-file>
 		<base-image-tag>openjdk</base-image-tag>
