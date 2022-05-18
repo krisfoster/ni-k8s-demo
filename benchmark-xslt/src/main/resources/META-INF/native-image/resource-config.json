@@ -1,0 +1,7 @@
+{
+  "resources":{
+  "includes":[{
+      "pattern":"\\Qnet/sf/saxon/data/categories.xml\\E"
+    }]},
+  "bundles":[]
+}
