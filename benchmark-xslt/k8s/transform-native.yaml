@@ -1,0 +1,53 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: transform-native-deployment
+  namespace: transform
+  labels:
+    app: transform-native
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: transform-native
+  template:
+    metadata:
+      labels:
+        app: transform-native
+    spec:
+      containers:
+        - name: transform-native
+          image: phx.ocir.io/oracledeveloper/k8s-perf-demo:transform.native.0.0.2-SNAPSHOT
+          imagePullPolicy: Always
+          resources:
+            requests:
+              memory: "128Mi"
+              cpu: "2000m"
+            limits:
+              memory: "256Mi"
+              cpu: "2000m"
+          ports:
+            - containerPort: 8080
+              name: native-port
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: transform-native-svc
+  namespace: transform
+  labels:
+    app: transform-native
+  annotations:
+    oci.oraclecloud.com/load-balancer-type: "lb"
+    prometheus.io/path: "/actuator/prometheus"
+    prometheus.io/port: "8080"
+    prometheus.io/scrape: "true"
+spec:
+  type: LoadBalancer
+  ports:
+    - port : 8080
+  selector:
+    app: transform-native
+
+---
