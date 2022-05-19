@@ -6,7 +6,7 @@ tput clear
 echo "What is GraalVM?" | figlet -f big -t
 read
 tput clear
-echo "3 is the magic Number" | figlet -f big -t
+echo "3  is the Magic Number" | figlet -f big -t
 read
 tput clear
 echo "Native Image - App => Native Exe => Cloud" | figlet -f big -t
