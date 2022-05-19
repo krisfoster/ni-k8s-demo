@@ -40,6 +40,8 @@
 				<artifactId>dockerfile-maven-plugin</artifactId>
 				<version>${dockerfile-maven-version}</version>
 				<executions>
+					<!-- Add mutiple executions to tag as latest as well as version?
+						see: https://github.com/spotify/dockerfile-maven/issues/10 -->
 					<execution>
 					<id>default</id>
 					<goals>
@@ -91,6 +93,7 @@
 							<imageName>${binary-name}</imageName>
 							<buildArgs>
 								<buildArg>-H:+ReportExceptionStackTraces ${native-image-extra-flags}</buildArg>
+								<buildArg>-H:+StaticExecutableWithDynamicLibC</buildArg>
 							</buildArgs>
 						</configuration>
 					</plugin>

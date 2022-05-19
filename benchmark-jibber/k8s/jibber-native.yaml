@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
         - name: jibber-native
-          image: phx.ocir.io/oracledeveloper/k8s-perf-demo:jibber.native.0.0.2-SNAPSHOT
+          image: phx.ocir.io/oracledeveloper/k8s-perf-demo:jibber.native.0.0.3-SNAPSHOT
           imagePullPolicy: Always
           resources:
             requests:

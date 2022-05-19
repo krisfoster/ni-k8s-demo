@@ -11,13 +11,13 @@ import io.micrometer.core.annotation.Timed;
  */
 @RestController
 @RequestMapping("/jibber")
+@Timed
 public class JibberController {
 
     @Autowired
     Jabberwocky j;
 
     @RequestMapping
-    @Timed(value = "method.alarms.api.getall", percentiles = { 0.5, 0.95, 0.99 }, description = "Read all alarms api metric")
     ResponseEntity<String> jibber() {
         return ResponseEntity.ok(j.generate());
     }
