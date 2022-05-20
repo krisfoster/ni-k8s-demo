@@ -4,7 +4,11 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
 import rita.RiMarkov;
 
-
+/**
+ * Utility class, that is a Singleton, that generates nonsense verse in the style of
+ * the poem Jabberocky, by Lewis Carol. It does this using a Markov Chain to model
+ * the text of the original poem.
+ */
 @Service
 @Scope("singleton")
 public class Jabberwocky {

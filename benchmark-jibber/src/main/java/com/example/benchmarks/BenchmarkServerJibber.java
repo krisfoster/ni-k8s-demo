@@ -8,7 +8,7 @@ import org.springframework.context.ApplicationContext;
 /**
  * REST Controller which serves as an entry-point for requests for prime number information.
  *
- * @author Brendt Lucas
+ * @author kris.foster@oracle.com
  */
 @SpringBootApplication
 public class BenchmarkServerJibber {
