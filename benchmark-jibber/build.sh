@@ -12,3 +12,7 @@ docker push phx.ocir.io/oracledeveloper/k8s-perf-demo:jibber.openjdk.0.0.3-SNAPS
 # Build the Native Image Container and push it out
 mvn clean package -Ddocker-file=Dockerfiles/Dockerfile.native -Dbase-image-tag=native -Pnative
 docker push phx.ocir.io/oracledeveloper/k8s-perf-demo:jibber.native.0.0.3-SNAPSHOT
+
+# Build the GraalVM EE JIT Image and push it
+mvn clean package -Ddocker-file=Dockerfiles/Dockerfile.graalee -Dbase-image-tag=graalee
+docker push phx.ocir.io/oracledeveloper/k8s-perf-demo:jibber.graalee.0.0.3-SNAPSHOT

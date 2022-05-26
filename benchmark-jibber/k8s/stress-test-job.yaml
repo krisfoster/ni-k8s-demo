@@ -19,11 +19,12 @@ spec:
             - 10m
             - http://jibber-native-svc.jibber.svc.cluster.local:8080/jibber
           restartPolicy: Never
+
 ---
 apiVersion: batch/v1
 kind: CronJob
 metadata:
-  name: stress-test-openjdk-job
+  name: stress-test-graalee-job
   namespace: jibber
 spec:
   schedule: "*/10 * * * *"
@@ -32,12 +33,12 @@ spec:
       template:
         spec:
           containers:
-          - name: stress-test-openjdk
+          - name: stress-test-graalee
             image: williamyeh/hey:latest
             imagePullPolicy: IfNotPresent
             command:
             - /hey
             - -z
             - 10m
-            - http://jibber-openjdk-svc.jibber.svc.cluster.local:8080/jibber
+            - http://jibber-graalee-svc.jibber.svc.cluster.local:8080/jibber
           restartPolicy: Never

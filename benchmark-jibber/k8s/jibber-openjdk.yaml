@@ -39,7 +39,9 @@ metadata:
   labels:
     app: jibber-openjdk
   annotations:
-    oci.oraclecloud.com/load-balancer-type: "lb"
+    service.beta.kubernetes.io/oci-load-balancer-shape: "flexible"
+    service.beta.kubernetes.io/oci-load-balancer-shape-flex-min: "10"
+    service.beta.kubernetes.io/oci-load-balancer-shape-flex-max: "100"
     prometheus.io/path: "/actuator/prometheus"
     prometheus.io/port: "8080"
     prometheus.io/scrape: "true"

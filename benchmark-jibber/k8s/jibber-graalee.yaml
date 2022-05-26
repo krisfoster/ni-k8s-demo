@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
         - name: jibber-graalee
-          image: phx.ocir.io/oracledeveloper/k8s-perf-demo:jibber.graalee.0.0.2-SNAPSHOT
+          image: phx.ocir.io/oracledeveloper/k8s-perf-demo:jibber.graalee.0.0.3-SNAPSHOT
           imagePullPolicy: Always
           resources:
             requests:
@@ -39,7 +39,9 @@ metadata:
   labels:
     app: jibber-graalee
   annotations:
-    oci.oraclecloud.com/load-balancer-type: "lb"
+    service.beta.kubernetes.io/oci-load-balancer-shape: "flexible"
+    service.beta.kubernetes.io/oci-load-balancer-shape-flex-min: "10"
+    service.beta.kubernetes.io/oci-load-balancer-shape-flex-max: "100"
     prometheus.io/path: "/actuator/prometheus"
     prometheus.io/port: "8080"
     prometheus.io/scrape: "true"
