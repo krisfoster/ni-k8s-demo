@@ -1,19 +1,56 @@
-# Building
+# GraalVM Native  Image Performance Demo
 
-We are going to build inside docker images - this is to allow for the fact that users of this repo
-may be running on an OS other than linux. If you were to build on your native OS (Say Windows or OSX)
-`native-image` would build an exe for your OS and that wouldn't work on linux, which is how we are going to package
-and run this (inside containers running in a K8s cluster).
+## Overview
 
-So, if you are running on OSX / Windows, you need to ensure that the VM you are using to run docker / podman has sufficient
-resources. We would recommend at least 4 cores and a minimum of 16GB memory.
+The demo consists of several parts:
 
-Another thing to note is the use of the builder image. As we are building inside a docker container and are using the
-maven tooling to generate the native executable, maven will need to be inside our container. WHich means that when maven
-runs it will need access to the cache of dependencies. On
+1. A base setup within the K8s cluster that creates:
+   1. Prometheus - used for storing time series data gathered from the running instances
+   2. Grafana - used to present dashboards showing the relative performance of the differing deployments
+2. Individual applications that get deployed to the cluster
 
-# Load Balancing
+For each benchmark we deploy to the cluster (item 2 in the list above) we will deploy the same app in a number of 
+different ways. As a Java application running on OpenJDK, as a GraalVM EE Native Image and, possibly, as a Java
+application running on GraalVM EE as a JVM.
 
-We use the OCI nnotation to add automatic loadbalancer adition:
+The point of this is to display the varying performance profiles of the dpeloyments. 
 
-https://docs.oracle.com/en-us/iaas/Content/ContEng/Tasks/contengcreatingloadbalancer.htm
+## Prerequisites
+
+For this demo you will need the following software pre-installed. This demo can be deployed to an existing Kubernetes
+cluster, if you don't have a Kubernetes cluster already setup you can use these [scipts][terraform/] to create one on OCI.
+
+* OCI CLI (Command Line Interface)
+* Linux - to build the images you need to be on linux. Consider running this from an OCI OL8 compute instance
+* kubectl - for deploying to managing your k8s cluster
+* GraalVM EE 22, with the Native Image component installed
+
+## Installation
+
+You will need to set some environment variables that will point to your repository that you can push the Docker images
+to. It could be dockerhub, it could be a container repository on OCI. We will use an environment variable to set this:
+
+````shell
+export REPO_PATH="<INSERT-YOUR-DOCKER-REPO-PATH-HERE>"
+````
+
+> ### NOTE : For OCI Installation
+> Scripts have been provided in the `terraform` folder that will set this for you - read the [README](terraform/README.md).
+
+To deploy the base setup (Prometheus, Grafana):
+
+```shell
+./scripts/k8s-setup.sh
+```
+
+You can get the public IP endpoint for Grafana with the following scipts - allow enough time for the deployments to finish
+before running:
+
+```shell
+./scripts/grafana-endpoint.sh
+```
+
+## Install the Spring Microservice Benchmark
+
+The first of the micro benchmarks we can install is a Spring microservice. It uses a Java library to create a 
+Markov model of the poem Jabberwocky, which it then 
