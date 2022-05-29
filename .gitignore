@@ -82,3 +82,12 @@ nb-configuration.xml
 ## OS X
 ##############################
 .DS_Store
+
+##############################
+## Terraform
+##############################
+.terraform
+*.tfstate*
+*.lock.hcl
+*.lock.info
+planfile
