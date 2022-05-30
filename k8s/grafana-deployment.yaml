@@ -70,9 +70,12 @@ spec:
           - name: grafana-datasources
             mountPath: /etc/grafana/provisioning/datasources/prometheus.yaml
             subPath: prometheus.yaml
-          - name: grafana-dashboard-providers
-            mountPath: /etc/grafana/provisioning/dashboards/dasboard.yaml
+          - name: grafana-dashboard-config
+            mountPath: /etc/grafana/provisioning/dashboards/dashboard.yaml
             subPath: dashboard.yaml
+          - name: grafana-dashboard-jibber
+            mountPath: /etc/grafana/provisioning/dashboards/jibber.json
+            subPath: jibber.json
       volumes:
       - name: grafana-pv
         persistentVolumeClaim:
@@ -83,9 +86,12 @@ spec:
       - name: grafana-datasources
         configMap:
           name: grafana-datasources
-      - name: grafana-dashboard-providers
+      - name: grafana-dashboard-config
         configMap:
-          name: grafana-dashboard-providers
+          name: grafana-dashboard-config
+      - name: grafana-dashboard-jibber
+        configMap:
+          name: grafana-dashboard-jibber
 ---
 apiVersion: v1
 kind: Service

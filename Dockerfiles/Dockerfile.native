@@ -1,8 +1,0 @@
-FROM container-registry.oracle.com/os/oraclelinux:8-slim
-
-EXPOSE 8080
-
-ARG JAR_FILE
-
-COPY ./target/${JAR_FILE} prime
-ENTRYPOINT ["/prime"]

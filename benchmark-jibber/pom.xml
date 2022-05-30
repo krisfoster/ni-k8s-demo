@@ -52,7 +52,7 @@
 				</executions>
 				<configuration>
 					<repository>${docker-repository}</repository>
-					<tag>${binary-name}.${base-image-tag}.${project.version}</tag>
+					<tag>${binary-name}.${base-image-tag}.latest</tag>
 					<buildArgs>
 						<JAR_FILE>${project.build.finalName}.jar</JAR_FILE>
 					</buildArgs>
@@ -112,7 +112,7 @@
 						</executions>
 						<configuration>
 							<repository>${docker-repository}</repository>
-							<tag>${binary-name}.${base-image-tag}.${project.version}</tag>
+							<tag>${binary-name}.${base-image-tag}.latest</tag>
 							<buildArgs>
 								<APP_FILE>${binary-name}</APP_FILE>
 							</buildArgs>

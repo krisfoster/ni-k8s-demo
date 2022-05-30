@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
         - name: jibber-graalee
-          image: phx.ocir.io/oracledeveloper/k8s-perf-demo:jibber.graalee.0.0.3-SNAPSHOT
+          image: ${REPO_PATH}:jibber.graalee.latest
           imagePullPolicy: Always
           resources:
             requests:

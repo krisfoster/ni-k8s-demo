@@ -4,7 +4,7 @@ metadata:
   name: stress-test-native-job
   namespace: jibber
 spec:
-  schedule: "*/10 * * * *"
+  schedule: "*/1 * * * *"
   jobTemplate:
     spec:
       template:
@@ -16,10 +16,9 @@ spec:
             command:
             - /hey
             - -z
-            - 10m
+            - 1m
             - http://jibber-native-svc.jibber.svc.cluster.local:8080/jibber
           restartPolicy: Never
-
 ---
 apiVersion: batch/v1
 kind: CronJob
@@ -27,7 +26,7 @@ metadata:
   name: stress-test-graalee-job
   namespace: jibber
 spec:
-  schedule: "*/10 * * * *"
+  schedule: "*/1 * * * *"
   jobTemplate:
     spec:
       template:
@@ -39,6 +38,28 @@ spec:
             command:
             - /hey
             - -z
-            - 10m
+            - 1m
             - http://jibber-graalee-svc.jibber.svc.cluster.local:8080/jibber
+          restartPolicy: Never
+---
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: stress-test-openjdk-job
+  namespace: jibber
+spec:
+  schedule: "*/1 * * * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          containers:
+          - name: stress-test-openjdk
+            image: williamyeh/hey:latest
+            imagePullPolicy: IfNotPresent
+            command:
+            - /hey
+            - -z
+            - 1m
+            - http://jibber-openjdk-svc.jibber.svc.cluster.local:8080/jibber
           restartPolicy: Never

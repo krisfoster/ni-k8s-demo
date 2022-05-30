@@ -241,10 +241,10 @@
                         "uid": "PBFA97CFB590B2093"
                     },
                     "exemplar": true,
-                    "expr": "container_memory_rss{namespace=\"jibber\",image=\"phx.ocir.io/oracledeveloper/k8s-perf-demo:jibber.openjdk.0.0.2-SNAPSHOT\"}",
+                    "expr": "container_memory_rss{namespace=\"jibber\",image=~\".*:jibber.native.latest\"}",
                     "hide": false,
                     "interval": "",
-                    "legendFormat": "OpenJDK",
+                    "legendFormat": "GraalVM Native exe",
                     "refId": "B"
                 },
                 {
@@ -253,9 +253,9 @@
                         "uid": "PBFA97CFB590B2093"
                     },
                     "exemplar": true,
-                    "expr": "container_memory_rss{namespace=\"jibber\",image=\"phx.ocir.io/oracledeveloper/k8s-perf-demo:jibber.native.0.0.2-SNAPSHOT\"}",
+                    "expr": "container_memory_rss{namespace=\"jibber\",image=~\".*:jibber.openjdk.latest\"}",
                     "interval": "",
-                    "legendFormat": "GraalVM Native exe",
+                    "legendFormat": "OpenJDK",
                     "refId": "A"
                 }
             ],
@@ -370,6 +370,6 @@
     "timezone": "",
     "title": "Jibber API",
     "uid": "qA79viunk",
-    "version": 15,
+    "version": 1,
     "weekStart": ""
 }

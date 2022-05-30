@@ -1,9 +1,0 @@
-FROM container-registry.oracle.com/graalvm/enterprise:latest
-
-ARG JAR_FILE
-
-EXPOSE 8080
-
-COPY ./target/${JAR_FILE} app.jar
-
-CMD ["java","-jar","app.jar"]
