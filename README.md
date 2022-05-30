@@ -147,3 +147,6 @@ If you want to see where the containers have been pushed to, you can look in the
 You can open the dashboards that have been deployed for the benchmarks. From the Grafana web UI:
 
 `Dashboards > Brwose > Benchmarks`
+
+![Browse Dashboards](images/grafana-dashboards-browse.png)
+![Browse Folder](images/grafana-dashboards-browse-folder.png)
