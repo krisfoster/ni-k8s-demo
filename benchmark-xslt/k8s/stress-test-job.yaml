@@ -1,0 +1,65 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: stress-test-native-job
+  namespace: transform
+spec:
+  schedule: "*/1 * * * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          containers:
+          - name: stress-test-native
+            image: williamyeh/hey:latest
+            imagePullPolicy: IfNotPresent
+            command:
+            - /hey
+            - -z
+            - 1m
+            - http://transform-native-svc.transform.svc.cluster.local:8080/transform
+          restartPolicy: Never
+---
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: stress-test-graalee-job
+  namespace: transform
+spec:
+  schedule: "*/1 * * * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          containers:
+          - name: stress-test-graalee
+            image: williamyeh/hey:latest
+            imagePullPolicy: IfNotPresent
+            command:
+            - /hey
+            - -z
+            - 1m
+            - http://transform-graalee-svc.transform.svc.cluster.local:8080/transform
+          restartPolicy: Never
+---
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: stress-test-openjdk-job
+  namespace: transform
+spec:
+  schedule: "*/1 * * * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          containers:
+          - name: stress-test-openjdk
+            image: williamyeh/hey:latest
+            imagePullPolicy: IfNotPresent
+            command:
+            - /hey
+            - -z
+            - 1m
+            - http://transform-openjdk-svc.transform.svc.cluster.local:8080/transform
+          restartPolicy: Never

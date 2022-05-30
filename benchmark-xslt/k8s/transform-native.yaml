@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
         - name: transform-native
-          image: phx.ocir.io/oracledeveloper/k8s-perf-demo:transform.native.0.0.2-SNAPSHOT
+          image: ${REPO_PATH}:transform.native.latest
           imagePullPolicy: Always
           resources:
             requests:

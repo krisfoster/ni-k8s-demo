@@ -1,23 +1,23 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: jibber-graalee-deployment
-  namespace: jibber
+  name: transform-graalee-deployment
+  namespace: transform
   labels:
-    app: jibber-graalee
+    app: transform-graalee
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: jibber-graalee
+      app: transform-graalee
   template:
     metadata:
       labels:
-        app: jibber-graalee
+        app: transform-graalee
     spec:
       containers:
-        - name: jibber-graalee
-          image: phx.ocir.io/oracledeveloper/k8s-perf-demo:jibber.graalee.0.0.2-SNAPSHOT
+        - name: transform-graalee
+          image: ${REPO_PATH}:transform.graalee.latest
           imagePullPolicy: Always
           resources:
             requests:
@@ -34,10 +34,10 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: jibber-graalee-svc
-  namespace: jibber
+  name: transform-graalee-svc
+  namespace: transform
   labels:
-    app: jibber-graalee
+    app: transform-graalee
   annotations:
     oci.oraclecloud.com/load-balancer-type: "lb"
     prometheus.io/path: "/actuator/prometheus"
@@ -48,6 +48,6 @@ spec:
   ports:
     - port : 8080
   selector:
-    app: jibber-graalee
+    app: transform-graalee
 
 ---

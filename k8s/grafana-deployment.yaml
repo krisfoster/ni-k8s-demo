@@ -76,6 +76,9 @@ spec:
           - name: grafana-dashboard-jibber
             mountPath: /etc/grafana/provisioning/dashboards/jibber.json
             subPath: jibber.json
+          - name: grafana-dashboard-transform
+            mountPath: /etc/grafana/provisioning/dashboards/transform.json
+            subPath: transform.json
       volumes:
       - name: grafana-pv
         persistentVolumeClaim:
@@ -92,6 +95,9 @@ spec:
       - name: grafana-dashboard-jibber
         configMap:
           name: grafana-dashboard-jibber
+      - name: grafana-dashboard-transform
+        configMap:
+          name: grafana-dashboard-transform
 ---
 apiVersion: v1
 kind: Service
