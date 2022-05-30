@@ -23,14 +23,14 @@ In the end you will get a dashboard like the following image that displays real 
 For this demo you will need the following software pre-installed. This demo can be deployed to an existing Kubernetes cluster, if you don't have a Kubernetes cluster already setup you can use the terraform to create one on OCI.
 
 * `docker`
-* Kubernetes Cluster (or use the Terraform provisioing scripts to create one on OCI)
+* Kubernetes Cluster (or use the Terraform provisioning scripts to create one on OCI)
 * Linux OS - to build the images you need to be on linux. Consider running this from an OCI OL8 compute instance. TODO :: provide docker based native image builds
 * `kubectl` - for deploying to your k8s cluster
 * GraalVM EE 22, with the Native Image component installed
-* `jq` - command line tool for querying json data [jq](https://stedolan.github.io/jq/)
-* `envsubst` - Does shell variable substitution into files [https://linux.die.net/man/1/envsubst](https://linux.die.net/man/1/envsubst)
+* `jq` - command line tool for querying json data. [jq website](https://stedolan.github.io/jq/)
+* `envsubst` - Does shell variable substitution into files. [https://linux.die.net/man/1/envsubst](https://linux.die.net/man/1/envsubst)
 
-Optional requirements - if you want to run the script that provision a K8s cluster on OCI:
+Optional requirements - if you want to run the script that provisions a K8s cluster on OCI:
 
 * OCI CLI (Command Line Interface)
 * An account on OCI with access to a tenancy
