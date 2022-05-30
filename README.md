@@ -20,22 +20,22 @@ In the end you will get a dashboard like the following image that displays real 
 
 ## Prerequisites
 
-For this demo you will need the following software pre-installed. This demo can be deployed to an existing Kubernetes
-cluster, if you don't have a Kubernetes cluster already setup you can use these [scipts][terraform/] to create one on OCI.
+For this demo you will need the following software pre-installed. This demo can be deployed to an existing Kubernetes cluster, if you don't have a Kubernetes cluster already setup you can use the terraform to create one on OCI.
 
-* Docker
-* Kubernets Cluster (or use the Terraform provisioing scripts to create one on OCI)
-* Linux OS - to build the images you need to be on linux. Consider running this from an OCI OL8 compute instance
-* kubectl - for deploying to managing your k8s cluster
+* `docker`
+* Kubernetes Cluster (or use the Terraform provisioing scripts to create one on OCI)
+* Linux OS - to build the images you need to be on linux. Consider running this from an OCI OL8 compute instance. TODO :: provide docker based native image builds
+* `kubectl` - for deploying to your k8s cluster
 * GraalVM EE 22, with the Native Image component installed
-* jq - command line tool for querying json data [jq](https://stedolan.github.io/jq/)
+* `jq` - command line tool for querying json data [jq](https://stedolan.github.io/jq/)
+* `envsubst` - Does shell variable substitution into files [https://linux.die.net/man/1/envsubst](https://linux.die.net/man/1/envsubst)
 
 Optional requirements - if you want to run the script that provision a K8s cluster on OCI:
 
 * OCI CLI (Command Line Interface)
 * An account on OCI with access to a tenancy
 * A compartment on OCI to deploy your k8s cluster and container repository to
-* Terraform - [Install on Linux](https://www.terraform.io/downloads)
+* Terraform - [Install](https://www.terraform.io/downloads)
 
 ## Create a K8s Cluster & Container Repository on OCI
 
@@ -48,7 +48,9 @@ Optional requirements - if you want to run the script that provision a K8s clust
 
 These instructions will show you how to create a K8s cluster and a public container registery in a compartment on Oracle Cloud (OCI).
 
-Create a file called, `my-variables.tf`. This will hold the details of your OCI user, region, tenancy and compartment ID within OCI that you want to create the container repository and the k8s cluster within. The following is an example - note that you will need to replace the placeholders with the actual OCIDs for each of these and the OCI region name:
+Create a file called, `my-variables.tf`. This will hold the details of your OCI user, region, tenancy and compartment ID within OCI that you want to create the container repository and the k8s cluster within. You won't check this in as they details are specific to you.
+
+The following is an example - note that you will need to replace the placeholders with the actual values for each of these:
 
 ```text
 variable "tenancy_ocid" {
@@ -67,20 +69,23 @@ variable "region" {
 
 The above file, `my-variables.tf`, can be thought of as your connection details.
 
-Next we will create everything. Run the following shell commands, form the root of the code repository:
+Next we will get Terraform to create everything. Run the following shell commands, fromm the root of the code repository:
 
 ```shell
+# Initialise terraform for thsi project
 terraform init
+# Validate your config
+terraform validate
 # This creates everyting. NOTE: This may take 10 - 20 mins to complete
 terraform apply
 # Configure kubectl to talk to and manage your new k8s cluster - requires the OCI CLI 
 ./scripts/add-kubectl-config.sh
 # Set shell environment variables that will hold the container repositry name
-# NOTE : USe of '.' to add the variables to the current shell environment
+# NOTE : Use of '.' to add the variables to the current shell environment
 . ./get-repo-path.sh
 ```
 
-Let' quickly test your connectivity to the new k8s cluster:
+Let's quickly test your connectivity to the new k8s cluster:
 
 ```shell
 # Query the cluster to return the namespaces
@@ -113,7 +118,7 @@ phx.ocir.io/oracledeveloper/graal-demo-repo
 
 You will need to ensure that the environment variable, `REPO_PATH`, is corectly set before proceeding. If you used the terraform script this will be done for you.
 
-To deploy the base setup (Prometheus, Grafana):
+To deploy, this may take a little while as it is building all of the docker images for all of the benchmarks:
 
 ```shell
 ./scripts/deploy.sh
@@ -125,51 +130,20 @@ You can monitor the services (public load balancers for Prometheus and Grafana) 
 kubectl get svc -n monitoring
 ```
 
-You can get the public IP endpoint (the `EXTERNAL-IP` needs to be available before you do this) for Grafana with the following scipts - allow enough time for the deployments to finish before running:
+You can get the public IP endpoint (the `EXTERNAL-IP` needs to be available before you do this) for Grafana with the following scipt - allow enough time for the deployments to finish before running:
 
 ```shell
 ./scripts/grafana-endpoint.sh
 ```
 
-You can use this to login into Grafana. Do this now. You can log in with the default user / password (`admin` / `admin`). Change the password for this immeditatley - this is a public facing service.
+You can use this to login into Grafana. Do this now. You can log in with the default user / password (`admin` / `admin`). Change the password for this immediatley - this is a public facing service.
 
 **NOTE:** I will update the confog to generate a secure, unique password at some point soon. Until then, change the password.
 
-## Install the Spring Microservice Benchmark
-
-The first of the micro benchmarks we can install is a Spring microservice. It uses a Java library to create a Markov model of the poem Jabberwocky, which it then returns.
-
-Let's install it:
-
-```shell
-cd benchmark-jibber
-# Build the containers and push them to the container repository that has just been created
-./build.sh
-```
-
 If you want to see where the containers have been pushed to, you can look in the newly created container repository (if you used the terraform setup to create everything) and you should see them there.
 
-You need to update the K8s configuration files with the repository path that was created when you initialised your environment. The value for this is contained within the `$REPO_PATH` environment variable.
+## Open the Grafana Dashboards
 
-> ### NOTE: We could automate this using `envsubst`, or maybe there is some k8s way to do this with secrets?
+You can open the dashboards that have been deployed for the benchmarks. From the Grafana web UI:
 
-Edit the following files and update as follows, replacing `<INSERT REPOSITORY PATH IN HERE>` with the value of `$REPO_PATH`:
-
-```yaml
-    spec:
-      containers:
-        - name: jibber-openjdk
-          image: <INSERT REPOSITORY PATH IN HERE>:jibber.openjdk.0.0.3-SNAPSHOT
-```
-
-These are the files that need updating:
-
-* `k8s/jibber-graalee.yaml`
-* `k8s/jibber-native.yaml`
-* `k8s/jibber-openjdk.yaml`
-
-Now we need to deploy these containers to our k8s cluster:
-
-```shell
-./deploy.sh
-```
+`Dashboards > Brwose > Benchmarks`
