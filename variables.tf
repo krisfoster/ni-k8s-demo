@@ -59,7 +59,7 @@ Region Code
 ******************************
 */
 
-data "oci_identity_region_subscriptions" "luna_region_subscriptions" {
+data "oci_identity_region_subscriptions" "my_region_subscriptions" {
   #Required
   tenancy_id = var.tenancy_ocid
 
@@ -86,11 +86,6 @@ variable "container_repository_readme_content" {
 
 variable "container_repository_readme_format" {
     default = "text/plain"
-}
-
-data "oci_identity_tenancy" "demo_tenancy" {
-    #Required
-    tenancy_id = var.tenancy_ocid
 }
 
 

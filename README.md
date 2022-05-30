@@ -22,6 +22,10 @@ In the end you will get a dashboard like the following image that displays real 
 
 For this demo you will need the following software pre-installed. This demo can be deployed to an existing Kubernetes cluster, if you don't have a Kubernetes cluster already setup you can use the terraform to create one on OCI.
 
+These will need to be installed onto the machine you will be doing the buidl and deploy from. Currently
+we suggest you run this on a Linux machine, perhaps an OCI Linux compute instance, and it is here that these
+dependencies will need to be installed.
+
 * `docker`
 * Kubernetes Cluster (or use the Terraform provisioning scripts to create one on OCI)
 * Linux OS - to build the images you need to be on linux. Consider running this from an OCI OL8 compute instance. TODO :: provide docker based native image builds
@@ -37,6 +41,11 @@ Optional requirements - if you want to run the script that provisions a K8s clus
 * A compartment on OCI to deploy your k8s cluster and container repository to
 * Terraform - [Install](https://www.terraform.io/downloads)
 
+## Installation Location
+
+All of the following installation tasks will take place on your Linux machine. This will be the machine
+that you will build and then deploy the Docker Images to K8s from.
+
 ## Create a K8s Cluster & Container Repository on OCI
 
 > ### If You Want to Re-Use an Existing K8s Cluster
@@ -45,6 +54,7 @@ Optional requirements - if you want to run the script that provisions a K8s clus
 > cluster and that you set an environment variable, `REPO_PATH`, to the value of the repository in your
 > chosen Container Registry that you want to deploy the built Docker Images to. The rest of the scripts
 > rely on this variable being present and correct.
+
 
 These instructions will show you how to create a K8s cluster and a public container registery in a compartment on Oracle Cloud (OCI).
 

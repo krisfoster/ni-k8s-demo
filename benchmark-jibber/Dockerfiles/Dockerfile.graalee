@@ -1,4 +1,4 @@
-FROM container-registry.oracle.com/graalvm/enterprise:latest
+FROM container-registry.oracle.com/graalvm/jdk-ee:latest
 
 ARG JAR_FILE
 
