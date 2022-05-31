@@ -26,18 +26,18 @@ These will need to be installed onto the machine you will be doing the buidl and
 we suggest you run this on a Linux machine, perhaps an OCI Linux compute instance, and it is here that these
 dependencies will need to be installed.
 
-* `docker`
+* `docker` - to [Install](https://docs.docker.com/get-docker/)
 * Kubernetes Cluster (or use the Terraform provisioning scripts to create one on OCI)
 * Linux OS - to build the images you need to be on linux. Consider running this from an OCI OL8 compute instance. TODO :: provide docker based native image builds
-* `kubectl` - for deploying to your k8s cluster
+* `kubectl` - for deploying to your k8s cluster. To [Install](https://kubernetes.io/docs/tasks/tools/)
 * GraalVM EE 22, with the Native Image component installed
 * `jq` - command line tool for querying json data. [jq website](https://stedolan.github.io/jq/)
-* `envsubst` - Does shell variable substitution into files. [https://linux.die.net/man/1/envsubst](https://linux.die.net/man/1/envsubst)
+* `envsubst` - Does shell variable substitution into files. [https://linux.die.net/man/1/envsubst](https://linux.die.net/man/1/envsubst), to [Install](https://command-not-found.com/envsubst)
 
 Optional requirements - if you want to run the script that provisions a K8s cluster on OCI:
 
-* OCI CLI (Command Line Interface)
-* An account on OCI with access to a tenancy
+* OCI CLI (Command Line Interface) - to [Install](https://docs.oracle.com/en-us/iaas/Content/API/SDKDocs/cliinstall.htm)
+* An account on OCI with access to a tenancy, can be a free one.
 * A compartment on OCI to deploy your k8s cluster and container repository to
 * Terraform - [Install](https://www.terraform.io/downloads)
 
