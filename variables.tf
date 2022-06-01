@@ -73,7 +73,7 @@ data "oci_identity_region_subscriptions" "my_region_subscriptions" {
 # Container repository
 #
 variable "container_repository_display_name" {
-    default = "graal-demo-repo"
+    default = "graal-demo-repo-krf"
 }
 
 variable "container_repository_is_public" {

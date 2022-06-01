@@ -26,7 +26,7 @@ These will need to be installed onto the machine you will be doing the buidl and
 we suggest you run this on a Linux machine, perhaps an OCI Linux compute instance, and it is here that these
 dependencies will need to be installed.
 
-* `docker` - to [Install](https://docs.docker.com/get-docker/)
+* `docker` - to [Install](https://docs.docker.com/get-docker/). DOn't use `Podman`, use `docker`
 * Kubernetes Cluster (or use the Terraform provisioning scripts to create one on OCI)
 * Linux OS - to build the images you need to be on linux. Consider running this from an OCI OL8 compute instance. TODO :: provide docker based native image builds
 * `kubectl` - for deploying to your k8s cluster. To [Install](https://kubernetes.io/docs/tasks/tools/)
