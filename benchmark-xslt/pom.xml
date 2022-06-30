@@ -95,6 +95,7 @@
 							<imageName>${binary-name}</imageName>
 							<buildArgs>
 								<buildArg>-H:+ReportExceptionStackTraces ${native-image-extra-flags}</buildArg>
+								<buildArg>-H:+StaticExecutableWithDynamicLibC</buildArg>
 								<buildArg>-J-Djavax.xml.transform.TransformerFactory=net.sf.saxon.TransformerFactoryImpl</buildArg>
 							</buildArgs>
 						</configuration>

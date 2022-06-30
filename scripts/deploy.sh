@@ -27,9 +27,9 @@ docker push ${REPO_PATH}:jibber.native.latest
 docker push ${REPO_PATH}:transform.native.latest
 
 # Build the GraalVM EE JIT Image and push them to the container reg
-#mvn package -Ddocker-repository=${REPO_PATH} -Ddocker-file=Dockerfiles/Dockerfile.graalee -Dbase-image-tag=graalee
-#docker push ${REPO_PATH}:jibber.graalee.latest
-#docker push ${REPO_PATH}:transform.graalee.latest
+mvn package -Ddocker-repository=${REPO_PATH} -Ddocker-file=Dockerfiles/Dockerfile.graalee -Dbase-image-tag=graalee
+docker push ${REPO_PATH}:jibber.graalee.latest
+docker push ${REPO_PATH}:transform.graalee.latest
 
 #############################
 # Jibber Benchmark

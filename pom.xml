@@ -19,7 +19,7 @@
 
   <modules>
 	  <module>benchmark-jibber</module>
-	  <!--module>benchmark-xslt</module-->
+	  <module>benchmark-xslt</module>
   </modules>
 
   <properties>

@@ -1,4 +1,4 @@
-FROM container-registry.oracle.com/os/oraclelinux:8-slim
+FROM gcr.io/distroless/base
 
 EXPOSE 8080
 
