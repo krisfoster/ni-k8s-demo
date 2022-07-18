@@ -17,4 +17,8 @@ public class BenchmarkServerJibber {
     public static void main(String[] args) {
         SpringApplication.run(BenchmarkServerJibber.class, args);
     }
+
+    public String combineString() {
+        return "Hello World";
+    }
 }
