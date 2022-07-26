@@ -7,16 +7,21 @@
     * ALready have the k8s cluster created and have run the `scripts/deploy.sh` script
 * Show the code
 * Build lcoally
-    * `cd benchmark-jibber`
+    * `cd benchmark-jibber` - or just open the `benchmark-jibber` folder in your IDE
     * `mvn clean package`
     * `java -jar target/....jar &`
     * Take a look at the time to startup
     * curl http://localhost:8080/jibber
     * kill the background process
+    * Also created a docker image - run the docker image
+    * `docker images | head -n2`
+    * `docker run --rm --name jibber-jdk -d -p 8080:8080 ....`
+    * don't forget to kill the container : `docker kill jibber-jdk`
+    * Take a quick look at the Dockerfile for the Java containers
 * We have seen our app, maybe it could be interesting to look at the size of the container
     * `sizes-java.sh`
 * We now have a baseline
-* back to slides : 2 slides, native Executables in Containers
+* back to slides : 5 slides, native Executables in Containers, What is Native Image, Spring Native
 * This is just a break so we can say that we are going to look at Native executables in containers next, built using native image
 * Can recap on what native image is
 * Back to Code slide, return 
@@ -27,12 +32,13 @@
     * Talk a little about how the native image maven tooling makes it easy to build a native executable.
     * You can ppass in all the arguments you can to native image tc.
 * Build the native executable and the docker container
-    * `mvn package -Pnative`
+    * `mvn package -Ddocker-file=Dockerfiles/Dockerfile.native -Dbase-image-tag=native -Pnative`
     * This also builds the native image locally, as well as packaging it into the docker container
 * Run the native image - let's see if it works
     * `./target/jibber &`
     * Notice how quickly iot starts
     * `curl http://localhost:8080/jibber`
+    * `fg` and kill it
 * We said that we package the native executable as a docker container, let's take a look at that
     * Look at the docker file, `dockerfile.native`
     * Uses distroless - a very small base image with very little in it
@@ -42,9 +48,14 @@
     * `sizes.sh`
     * Our container is about the 1/6th of the size of the JVM container
 * Let's take a look at how the two containers perform
+    * Recap slide
     * We are going to deploy them to an existing K8s cluster
     * The apps have been built to support metrics
     * the k8s cluster has Prometheus &  Grafana deployed to it, in order to allow us to view the performance for various metrics
+    * Slide has a very approximate diagram showing how things will be dpleoyed
+    * Short slide on stress testing and keeping things fair
+    * Push the containers:
+        * `./push.sh`
     * To deploy:
         * `./deploy.sh`
         * You may have deployed already, and see that nothing gets updated. That's ok - just say I deployed it earlier and we haven't changed anything
@@ -60,4 +71,5 @@
         * To locate the dashboards: Dashboards > Brwose > Benchmarks (folder) > Jibber API
         * Compare the throughput and the RSS (Resident Set Size, unswapped memeory)
         * Same, or similar performance for native executable as for OpenJDK - but much lower memroy consumption
-* Back to summary slides and end the talk - go over what we did, what are the benefits
+* Back to summary sli
+des and end the talk - go over what we did, what are the benefits
