@@ -65,7 +65,7 @@
 		customise this by passing in extra args such as:
 		Rename the tag for the image
 		-Dbase-image-tag=NAME-OF-TAG
-		Etra flasg to the native imaeg build
+		Extra flasg to the native imaeg build
 		-Dnative-image-extra-flags="- -gc=G1"
 		-->
 		<profile>

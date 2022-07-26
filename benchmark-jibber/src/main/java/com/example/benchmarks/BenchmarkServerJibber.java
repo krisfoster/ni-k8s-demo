@@ -2,7 +2,6 @@ package com.example.benchmarks;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.context.ApplicationContext;
 
 
 /**
@@ -16,9 +15,5 @@ public class BenchmarkServerJibber {
 
     public static void main(String[] args) {
         SpringApplication.run(BenchmarkServerJibber.class, args);
-    }
-
-    public String combineString() {
-        return "Hello World";
     }
 }
