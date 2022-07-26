@@ -92,6 +92,7 @@
 							<imageName>${binary-name}</imageName>
 							<buildArgs>
 								<buildArg>-H:+ReportExceptionStackTraces ${native-image-extra-flags}</buildArg>
+								<!-- Build a MOSTLY statically linked binary -->
 								<buildArg>-H:+StaticExecutableWithDynamicLibC</buildArg>
 							</buildArgs>
 						</configuration>

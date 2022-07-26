@@ -17,7 +17,7 @@ kubectl apply -f k8s/namespace.yaml
 # Deploy the containers to k8s
 cat k8s/jibber-openjdk.yaml | envsubst | kubectl apply -f -
 cat k8s/jibber-native.yaml  | envsubst | kubectl apply -f -
-cat k8s/jibber-graalee.yaml | envsubst | kubectl apply -f -
+#cat k8s/jibber-graalee.yaml | envsubst | kubectl apply -f -
 
 # Deploy the stress testing container
 kubectl apply -f k8s/stress-test-job.yaml

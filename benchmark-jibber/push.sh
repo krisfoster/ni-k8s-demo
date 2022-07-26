@@ -9,4 +9,4 @@ fi
 
 docker push ${REPO_PATH}:jibber.openjdk.latest
 docker push ${REPO_PATH}:jibber.native.latest
-docker push ${REPO_PATH}:jibber.graalee.latest
+#docker push ${REPO_PATH}:jibber.graalee.latest
