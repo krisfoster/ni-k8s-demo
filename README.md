@@ -49,7 +49,7 @@ that you will build and then deploy the Docker Images to K8s from.
 ## Create a K8s Cluster & Container Repository on OCI
 
 > ### If You Want to Re-Use an Existing K8s Cluster
-> You might want to re-use an existing l8s cluster, in which case you don't want to apply the following 
+> You might want to re-use an existing k8s cluster, in which case you don't want to apply the following 
 > terraform scripts. What you will need to do is ensure that your `kubectl` is connected to your
 > cluster and that you set an environment variable, `REPO_PATH`, to the value of the repository in your
 > chosen Container Registry that you want to deploy the built Docker Images to. The rest of the scripts
