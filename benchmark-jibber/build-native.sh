@@ -9,4 +9,4 @@ fi
 
 # Build the Native Image Container benchmark and push them to the container reg
 # You can change repository path for container with : -Ddocker-repository=${REPO_PATH}
-mvn package -Ddocker-file=Dockerfiles/Dockerfile.native -Dbase-image-tag=native -Pnative
+mvn package -Ddocker-repository=${REPO_PATH} -Ddocker-file=Dockerfiles/Dockerfile.native -Dbase-image-tag=native -Pnative

@@ -9,7 +9,7 @@ fi
 
 # Build the benchmark benchmarks and push them to the container reg
 # You can change repository path for container with : -Ddocker-repository=${REPO_PATH}
-mvn clean package
+mvn clean package -Ddocker-repository=${REPO_PATH} 
 
 # Build the GraalVM EE JIT Image and push them to the container reg
 #mvn package -Ddocker-repository=${REPO_PATH} -Ddocker-file=Dockerfiles/Dockerfile.graalee -Dbase-image-tag=graalee
